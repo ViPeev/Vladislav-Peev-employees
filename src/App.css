@@ -1,0 +1,53 @@
+#root,
+main {
+  display: flex;
+  flex-direction: column;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  color: white;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+th,
+td {
+  border: 1px solid;
+  border-collapse: collapse;
+  border-radius: 10px;
+}
+
+th,
+td,
+caption {
+  padding: 10px;
+}
+
+tbody > tr:hover {
+  background-color: white;
+  color: #242424;
+}
+
+input[type="submit"] {
+  cursor: pointer;
+  border: solid 2px currentColor;
+  border-radius: 25px;
+  padding: 3px 10px;
+  color: currentColor;
+  background-color: inherit;
+  font-size: 15px;
+}
+
+label {
+  text-decoration: underline;
+  text-underline-offset: 7px;
+  cursor: pointer;
+}
