@@ -1,11 +1,12 @@
-import Papa from "papaparse";
 import Table from "./Table";
 import Form from "./Form";
+import useCSVParse from "../hooks";
 import { useState } from "react";
 
 export default function Layout() {
   let [file, setFile] = useState({ current: null, error: false });
-  let [data, setData] = useState(null);
+  let [data, setData] = useCSVParse();
+  let [check, setCheck] = useState(false);
 
   const handleChange = (e) => {
     const fileType = e.target.files[0]?.type;
@@ -19,17 +20,15 @@ export default function Layout() {
     }
   };
 
+  const handleCheck = (e) => {
+    setCheck((current) => !current);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (file.current) {
-      Papa.parse(file.current, {
-        header: true,
-        skipEmptyLines: true,
-        complete: function (result) {
-          setData(result.data);
-        },
-      });
+      setData(file.current);
     }
   };
 
@@ -39,8 +38,10 @@ export default function Layout() {
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         hasError={file.error}
+        isChecked={check}
+        handleCheck={handleCheck}
       />
-      {data && <Table data={data} />}
+      {data && <Table data={data} isChecked={check} />}
     </main>
   );
 }

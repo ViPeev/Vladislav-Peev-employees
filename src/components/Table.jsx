@@ -1,12 +1,11 @@
 import { compute } from "../utils";
 
-export default function Table({ data }) {
-  let [pair, projects] = compute(data);
-  
-  let [employee1, employee2] = pair.split("-");
-  let totalDays = Object.values(projects).reduce((a, b) => a + b.period, 0);
+export default function Table({ data, isChecked }) {
+  let [pair, { projects, total }] = compute(data,isChecked);
 
-  return (
+  let [employee1, employee2] = pair.split("-");
+
+  return employee1 !== "None" ? (
     <table>
       <caption>Colleagues with the most time worked together</caption>
       <thead>
@@ -18,14 +17,17 @@ export default function Table({ data }) {
         </tr>
       </thead>
       <tbody>
-        {Object.entries(projects).map(([k, v]) => {
+        {Object.values(projects).map(([k, v], index) => {
+          console.log(k, v);
           return (
             <TableRow
               key={k}
               emp1={employee1}
               emp2={employee2}
               projId={k}
-              days={v.period}
+              days={v}
+              index={index}
+              rowSpan={projects.length}
             />
           );
         })}
@@ -33,18 +35,27 @@ export default function Table({ data }) {
       <tfoot>
         <tr>
           <td colSpan={"2"}>Total Days Together</td>
-          <td colSpan={"2"}>{totalDays}</td>
+          <td colSpan={"2"}>{total}</td>
         </tr>
       </tfoot>
     </table>
+  ) : (
+    <h2>
+      It looks like there isn't a pair of employees that worked together at the
+      same project and at the same time.
+    </h2>
   );
 }
 
-function TableRow({ emp1, emp2, projId, days }) {
+function TableRow({ emp1, emp2, projId, days, index, rowSpan}) {
   return (
     <tr>
-      <td>{emp1}</td>
-      <td>{emp2}</td>
+      {index === 0 && (
+        <>
+          <td rowSpan={rowSpan}>{emp1}</td>
+          <td rowSpan={rowSpan}>{emp2}</td>
+        </>
+      )}
       <td>{projId}</td>
       <td>{days}</td>
     </tr>
